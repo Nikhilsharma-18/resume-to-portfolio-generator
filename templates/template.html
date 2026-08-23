@@ -5,522 +5,1160 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{{ name }} - Portfolio</title>
+    <title>{{ name }} | Portfolio</title>
 
+    <!-- Main CSS -->
     <link rel="stylesheet"
           href="{{ url_for('static', filename='style.css') }}">
-</head>
 
+    <!-- Devicon - Skills Icons -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+
+    <!-- Font Awesome - UI Icons -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
 
 <body>
 
-<div class="portfolio-actions">
+    <!-- =========================
+         BACKGROUND
+    ========================== -->
 
-    <a href="/" class="action-button secondary">
-        ← Create Another Portfolio
-    </a>
+    <div class="bg-orb orb-one"></div>
+    <div class="bg-orb orb-two"></div>
+    <div class="bg-grid"></div>
 
-    <button
-        onclick="window.print()"
-        class="action-button primary"
-    >
-        Download / Save as PDF
-    </button>
 
-    {% if portfolio_id %}
+    <!-- =========================
+         NAVBAR
+    ========================== -->
 
-    <button
-        onclick="copyPortfolioLink()"
-        class="action-button share-button"
-    >
-        🔗 Copy Share Link
-    </button>
+    <nav class="navbar">
 
-    {% endif %}
+        <div class="nav-container">
 
-</div>
+            <div class="logo">
+                <span class="logo-dot"></span>
+                Portfolio
+            </div>
 
-<!-- =========================
-     HERO
-========================= -->
+            <div class="nav-links">
 
-<header class="hero">
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#education">Education</a>
+                <a href="#experience">Experience</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
 
-    <div class="hero-content">
+            </div>
 
-        <h1>{{ name }}</h1>
+        </div>
+
+    </nav>
+
+
+    <!-- =========================
+         HERO
+    ========================== -->
+
+    <header class="hero">
+
+        <div class="hero-container">
+
+            <div class="hero-content">
+
+                <div class="hero-badge">
+                    <span></span>
+                    Welcome to my portfolio
+                </div>
+
+                <p class="hero-small">
+                    Hello, I'm
+                </p>
+
+                <h1>
+                    {{ name }}
+                </h1>
+
+                <div class="hero-line"></div>
+
+                {% if summary %}
+
+                <p class="hero-description">
+                    {{ summary }}
+                </p>
+
+                {% else %}
+
+                <p class="hero-description">
+                    Welcome to my professional portfolio.
+                </p>
+
+                {% endif %}
+
+
+                <!-- HERO BUTTONS -->
+
+                <div class="hero-buttons">
+
+                    <a href="#projects"
+                       class="btn btn-primary">
+
+                        View Projects
+
+                        <span>↗</span>
+
+                    </a>
+
+                    <a href="#contact"
+                       class="btn btn-secondary">
+
+                        Contact Me
+
+                    </a>
+
+                </div>
+
+
+                <!-- QUICK CONTACT -->
+
+                <div class="quick-links">
+
+                    {% if email %}
+
+                    <a href="mailto:{{ email }}"
+                       title="Email">
+
+                        <i class="fa-solid fa-envelope"></i>
+
+                    </a>
+
+                    {% endif %}
+
+
+                    {% if linkedin %}
+
+                    <a href="{{ linkedin }}"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       title="LinkedIn">
+
+                        <i class="fa-brands fa-linkedin-in"></i>
+
+                    </a>
+
+                    {% endif %}
+
+
+                    {% if github %}
+
+                    <a href="{{ github }}"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       title="GitHub">
+
+                        <i class="fa-brands fa-github"></i>
+
+                    </a>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- HERO VISUAL -->
+
+            <div class="hero-visual">
+
+                <div class="profile-glow">
+
+                    <div class="profile-card">
+
+                        <div class="profile-top">
+
+                            <span></span>
+                            <span></span>
+                            <span></span>
+
+                        </div>
+
+                        <div class="profile-symbol">
+                            &lt;/&gt;
+                        </div>
+
+                        <div class="profile-name">
+                            {{ name }}
+                        </div>
+
+                        <div class="profile-role">
+                            Developer • Student • Creator
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <main>
+
+
+        <!-- =========================
+             ABOUT
+        ========================== -->
 
         {% if summary %}
-            <p class="headline">
-                {{ summary }}
-            </p>
+
+        <section id="about"
+                 class="section">
+
+            <div class="section-heading">
+
+                <span class="section-number">
+                    01
+                </span>
+
+                <div>
+
+                    <p class="eyebrow">
+                        INTRODUCTION
+                    </p>
+
+                    <h2>
+                        About Me
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="about-card">
+
+                <div class="quote-mark">
+                    “
+                </div>
+
+                <p>
+                    {{ summary }}
+                </p>
+
+            </div>
+
+        </section>
+
         {% endif %}
 
-        <div class="hero-contact">
-
-            {% if email %}
-                <a href="mailto:{{ email }}">
-                    {{ email }}
-                </a>
-            {% endif %}
-
-            {% if phone %}
-                <a href="tel:{{ phone }}">
-                    {{ phone }}
-                </a>
-            {% endif %}
-
-        </div>
-
-    </div>
-
-</header>
 
 
+        <!-- =========================
+             SKILLS
+        ========================== -->
 
-<main class="container">
+        {% if skills %}
 
+        <section id="skills"
+                 class="section">
 
-<!-- =========================
-     CAREER OBJECTIVE
-========================= -->
+            <div class="section-heading">
 
-{% if summary %}
+                <span class="section-number">
+                    02
+                </span>
 
-<section>
+                <div>
 
-    <h2>Career Objective</h2>
+                    <p class="eyebrow">
+                        WHAT I WORK WITH
+                    </p>
 
-    <p>
-        {{ summary }}
-    </p>
+                    <h2>
+                        Skills
+                    </h2>
 
-</section>
+                </div>
 
-{% endif %}
-
-
-
-<!-- =========================
-     SKILLS
-========================= -->
-
-{% if skills %}
-
-<section>
-
-    <h2>Skills</h2>
-
-    <div class="skills-container">
-
-        {% for skill in skills %}
-
-            <span class="skill">
-                {{ skill }}
-            </span>
-
-        {% endfor %}
-
-    </div>
-
-</section>
-
-{% endif %}
+            </div>
 
 
+            <div class="skills-grid">
 
-<!-- =========================
-     EDUCATION
-========================= -->
+                {% for skill in skills %}
 
-{% if education %}
+                {% set skill_lower = skill|lower %}
 
-<section>
+                <div class="skill-card">
 
-    <h2>Education</h2>
+                    <div class="skill-icon">
 
-    <div class="cards">
+                        {% if 'python' in skill_lower %}
 
-        {% for item in education %}
+                            <i class="devicon-python-plain"></i>
 
-        <div class="card">
+                        {% elif 'java' in skill_lower %}
 
-            {% if item.degree %}
-                <h3>
-                    {{ item.degree }}
-                </h3>
-            {% endif %}
+                            <i class="devicon-java-plain"></i>
 
-            {% if item.institution %}
-                <p>
-                    <strong>
-                        {{ item.institution }}
-                    </strong>
+                        {% elif 'c++' in skill_lower %}
+
+                            <i class="devicon-cplusplus-plain"></i>
+
+                        {% elif 'javascript' in skill_lower or 'js' in skill_lower %}
+
+                            <i class="devicon-javascript-plain"></i>
+
+                        {% elif 'typescript' in skill_lower %}
+
+                            <i class="devicon-typescript-plain"></i>
+
+                        {% elif 'react' in skill_lower %}
+
+                            <i class="devicon-react-original"></i>
+
+                        {% elif 'node' in skill_lower %}
+
+                            <i class="devicon-nodejs-plain"></i>
+
+                        {% elif 'html' in skill_lower %}
+
+                            <i class="devicon-html5-plain"></i>
+
+                        {% elif 'css' in skill_lower %}
+
+                            <i class="devicon-css3-plain"></i>
+
+                        {% elif 'mysql' in skill_lower %}
+
+                            <i class="devicon-mysql-plain"></i>
+
+                        {% elif 'mongo' in skill_lower %}
+
+                            <i class="devicon-mongodb-plain"></i>
+
+                        {% elif 'postgres' in skill_lower %}
+
+                            <i class="devicon-postgresql-plain"></i>
+
+                        {% elif 'git' in skill_lower and 'github' not in skill_lower %}
+
+                            <i class="devicon-git-plain"></i>
+
+                        {% elif 'github' in skill_lower %}
+
+                            <i class="devicon-github-original"></i>
+
+                        {% elif 'flask' in skill_lower %}
+
+                            <i class="devicon-flask-original"></i>
+
+                        {% elif 'django' in skill_lower %}
+
+                            <i class="devicon-django-plain"></i>
+
+                        {% elif 'bootstrap' in skill_lower %}
+
+                            <i class="devicon-bootstrap-plain"></i>
+
+                        {% elif 'tailwind' in skill_lower %}
+
+                            <i class="devicon-tailwindcss-original"></i>
+
+                        {% elif 'linux' in skill_lower %}
+
+                            <i class="devicon-linux-plain"></i>
+
+                        {% elif 'docker' in skill_lower %}
+
+                            <i class="devicon-docker-plain"></i>
+
+                        {% elif 'vscode' in skill_lower or 'vs code' in skill_lower or 'visual studio code' in skill_lower %}
+
+                            <i class="devicon-vscode-plain"></i>
+
+                        {% elif 'dbms' in skill_lower %}
+
+                            <i class="fa-solid fa-database"></i>
+
+                        {% elif 'computer network' in skill_lower %}
+
+                            <i class="fa-solid fa-network-wired"></i>
+
+                        {% elif 'operating system' in skill_lower %}
+
+                            <i class="fa-solid fa-desktop"></i>
+
+                        {% elif 'rest api' in skill_lower %}
+
+                            <i class="fa-solid fa-code"></i>
+
+                        {% elif 'machine learning' in skill_lower %}
+
+                            <i class="fa-solid fa-brain"></i>
+
+                        {% elif 'artificial intelligence' in skill_lower %}
+
+                            <i class="fa-solid fa-robot"></i>
+
+                        {% elif 'data structure' in skill_lower or 'algorithm' in skill_lower %}
+
+                            <i class="fa-solid fa-diagram-project"></i>
+
+                        {% elif 'oop' in skill_lower or 'object oriented' in skill_lower %}
+
+                            <i class="fa-solid fa-cubes"></i>
+
+                        {% else %}
+
+                            <span class="generic-skill-icon">
+                                ✦
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                    <span>
+                        {{ skill }}
+                    </span>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+        {% endif %}
+
+
+
+        <!-- =========================
+             EDUCATION
+        ========================== -->
+
+        {% if education %}
+
+        <section id="education"
+                 class="section education-section">
+
+            <div class="section-heading">
+
+                <span class="section-number">
+                    03
+                </span>
+
+                <div>
+
+                    <p class="eyebrow">
+                        ACADEMIC JOURNEY
+                    </p>
+
+                    <h2>
+                        Education
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="education-timeline">
+
+                {% for item in education %}
+
+                <article class="education-card">
+
+                    <div class="education-dot">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+
+                    <div class="education-year">
+                        {{ item.duration }}
+                    </div>
+
+
+                    <div class="education-content">
+
+                        <h3>
+                            {{ item.degree }}
+                        </h3>
+
+                        {% if item.institution %}
+
+                        <p class="institution">
+
+                            <i class="fa-solid fa-building-columns"></i>
+
+                            {{ item.institution }}
+
+                        </p>
+
+                        {% endif %}
+
+
+                        <div class="education-badges">
+
+                            {% if item.cgpa %}
+
+                            <div class="education-badge">
+
+                                <i class="fa-solid fa-star"></i>
+
+                                CGPA {{ item.cgpa }}/10
+
+                            </div>
+
+                            {% endif %}
+
+
+                            {% if item.percentage %}
+
+                            <div class="education-badge">
+
+                                <i class="fa-solid fa-chart-line"></i>
+
+                                {{ item.percentage }}%
+
+                            </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        {% if item.details %}
+
+                        <p class="education-details">
+                            {{ item.details }}
+                        </p>
+
+                        {% endif %}
+
+                    </div>
+
+                </article>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+        {% endif %}
+
+
+
+        <!-- =========================
+             EXPERIENCE
+        ========================== -->
+
+        {% if experience %}
+
+        <section id="experience"
+                 class="section experience-section">
+
+            <div class="section-heading">
+
+                <span class="section-number">
+                    04
+                </span>
+
+                <div>
+
+                    <p class="eyebrow">
+                        PROFESSIONAL JOURNEY
+                    </p>
+
+                    <h2>
+                        Experience
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="experience-timeline">
+
+                {% for job in experience %}
+
+                <article class="experience-card">
+
+                    <!-- Timeline Icon -->
+
+                    <div class="experience-dot">
+
+                        <i class="fa-solid fa-briefcase"></i>
+
+                    </div>
+
+
+                    <div class="experience-content">
+
+                        <!-- Job Title -->
+
+                        <h3 class="experience-title">
+                            {{ job.title }}
+                        </h3>
+
+
+                        <!-- Company -->
+
+                        {% if job.company %}
+
+                        <div class="experience-company">
+
+                            <i class="fa-solid fa-building"></i>
+
+                            <span>
+                                {{ job.company }}
+                            </span>
+
+                        </div>
+
+                        {% endif %}
+
+
+                        <!-- Date -->
+
+                        {% if job.date %}
+
+                        <div class="experience-date">
+
+                            <i class="fa-regular fa-calendar"></i>
+
+                            <span>
+                                {{ job.date }}
+                            </span>
+
+                        </div>
+
+                        {% endif %}
+
+
+                        <!-- Description -->
+
+                        {% if job.description %}
+
+                        <div class="experience-description">
+
+                            <div class="experience-description-icon">
+
+                                <i class="fa-solid fa-circle-info"></i>
+
+                            </div>
+
+                            <div class="experience-description-text">
+
+                                {{ job.description }}
+
+                            </div>
+
+                        </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </article>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+        {% endif %}
+
+
+
+        <!-- =========================
+             PROJECTS
+        ========================== -->
+
+        {% if projects %}
+
+        <section id="projects"
+                 class="section">
+
+            <div class="section-heading">
+
+                <span class="section-number">
+                    05
+                </span>
+
+                <div>
+
+                    <p class="eyebrow">
+                        THINGS I'VE BUILT
+                    </p>
+
+                    <h2>
+                        Featured Projects
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="projects-grid">
+
+                {% for project in projects %}
+
+                <article class="project-card">
+
+                    <div class="project-top">
+
+                        <span class="project-number">
+                            {{ "%02d"|format(loop.index) }}
+                        </span>
+
+                        <span class="project-arrow">
+                            ↗
+                        </span>
+
+                    </div>
+
+
+                    <h3>
+                        {{ project.title }}
+                    </h3>
+
+
+                    {% if project.description %}
+
+                    <p>
+                        {{ project.description }}
+                    </p>
+
+                    {% endif %}
+
+
+                    <div class="project-footer">
+
+                        <span>
+                            Project
+                        </span>
+
+                        <span class="project-line"></span>
+
+                        <span>
+                            {{ "%02d"|format(loop.index) }}
+                        </span>
+
+                    </div>
+
+                </article>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+        {% endif %}
+
+
+
+        <!-- =========================
+             ACHIEVEMENTS
+        ========================== -->
+
+        {% if achievements %}
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <span class="section-number">
+                    06
+                </span>
+
+                <div>
+
+                    <p class="eyebrow">
+                        HIGHLIGHTS
+                    </p>
+
+                    <h2>
+                        Achievements
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="achievement-grid">
+
+                {% for achievement in achievements %}
+
+                <div class="achievement-card">
+
+                    <span class="achievement-icon">
+                        <i class="fa-solid fa-star"></i>
+                    </span>
+
+                    <p>
+                        {{ achievement }}
+                    </p>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+        {% endif %}
+
+
+
+        <!-- =========================
+             CERTIFICATIONS
+        ========================== -->
+
+        {% if certifications %}
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <span class="section-number">
+                    07
+                </span>
+
+                <div>
+
+                    <p class="eyebrow">
+                        CREDENTIALS
+                    </p>
+
+                    <h2>
+                        Certifications
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="certification-list">
+
+                {% for certification in certifications %}
+
+                <div class="certification-card">
+
+                    <span>
+                        <i class="fa-solid fa-circle-check"></i>
+                    </span>
+
+                    <p>
+                        {{ certification }}
+                    </p>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+        {% endif %}
+
+
+
+        <!-- =========================
+             CONTACT
+        ========================== -->
+
+        <section id="contact"
+                 class="contact-section">
+
+            <div class="contact-content">
+
+                <p class="eyebrow">
+                    LET'S CONNECT
                 </p>
-            {% endif %}
 
-            {% if item.year %}
-                <p>
-                    {{ item.year }}
-                </p>
-            {% endif %}
-
-            {% if item.score %}
-                <p>
-                    {{ item.score }}
-                </p>
-            {% endif %}
-
-        </div>
-
-        {% endfor %}
-
-    </div>
-
-</section>
-
-{% endif %}
-
-
-
-<!-- =========================
-     EXPERIENCE
-========================= -->
-
-{% if experience %}
-
-<section>
-
-    <h2>Experience</h2>
-
-    <div class="cards">
-
-        {% for item in experience %}
-
-        <div class="card project-card">
-
-            {% if item.role %}
-                <h3>
-                    {{ item.role }}
-                </h3>
-            {% endif %}
-
-            {% if item.company %}
-                <p>
-                    <strong>
-                        {{ item.company }}
-                    </strong>
-                </p>
-            {% endif %}
-
-            {% if item.start_date and item.end_date %}
-                <p>
-                    {{ item.start_date }}
-                    –
-                    {{ item.end_date }}
-                </p>
-            {% endif %}
-
-            {% if item.description %}
-                <p>
-                    {{ item.description }}
-                </p>
-            {% endif %}
-
-        </div>
-
-        {% endfor %}
-
-    </div>
-
-</section>
-
-{% endif %}
-
-
-
-<!-- =========================
-     PROJECTS
-========================= -->
-
-{% if projects %}
-
-<section>
-
-    <h2>Projects</h2>
-
-    <div class="cards">
-
-        {% for project in projects %}
-
-        <div class="card project-card">
-
-            {% if project.name %}
-
-                <h3>
-                    {{ project.name }}
-                </h3>
-
-            {% endif %}
-
-            {% if project.description %}
+                <h2>
+                    Have a project in mind?
+                </h2>
 
                 <p>
-                    {{ project.description }}
+                    Feel free to reach out and let's create
+                    something amazing together.
                 </p>
 
-            {% endif %}
 
-        </div>
+                <div class="contact-buttons">
 
-        {% endfor %}
+                    {% if email %}
 
-    </div>
+                    <a href="mailto:{{ email }}"
+                       class="contact-button">
 
-</section>
+                        <span>
+                            <i class="fa-solid fa-envelope"></i>
+                        </span>
 
-{% endif %}
+                        Email Me
+
+                    </a>
+
+                    {% endif %}
+
+
+                    {% if linkedin %}
+
+                    <a href="{{ linkedin }}"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="contact-button">
+
+                        <span>
+                            <i class="fa-brands fa-linkedin-in"></i>
+                        </span>
+
+                        LinkedIn
+
+                    </a>
+
+                    {% endif %}
+
+
+                    {% if github %}
+
+                    <a href="{{ github }}"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="contact-button">
+
+                        <span>
+                            <i class="fa-brands fa-github"></i>
+                        </span>
+
+                        GitHub
+
+                    </a>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
 
 
 
-<!-- =========================
-     CERTIFICATIONS
-========================= -->
+    <!-- =========================
+         FOOTER
+    ========================== -->
 
-{% if certifications %}
+    <footer>
 
-<section>
+        <div class="footer-inner">
 
-    <h2>Certifications</h2>
-
-    <div class="cards">
-
-        {% for certification in certifications %}
-
-        <div class="card">
+            <div class="footer-logo">
+                {{ name }}
+            </div>
 
             <p>
-                {{ certification }}
+                Built with Resume to Portfolio Generator
             </p>
-
-        </div>
-
-        {% endfor %}
-
-    </div>
-
-</section>
-
-{% endif %}
-
-
-
-<!-- =========================
-     ACHIEVEMENTS
-========================= -->
-
-{% if achievements %}
-
-<section>
-
-    <h2>Achievements & Activities</h2>
-
-    <div class="cards">
-
-        {% for achievement in achievements %}
-
-        <div class="card">
 
             <p>
-                {{ achievement }}
+                © 2026 All Rights Reserved
             </p>
 
         </div>
 
-        {% endfor %}
+    </footer>
 
-    </div>
 
-</section>
+    <!-- =========================
+         EXPERIENCE OVERRIDE CSS
+         Keeps experience wide and readable
+    ========================== -->
 
-{% endif %}
+    <style>
 
+        .experience-section {
+            width: 100%;
+        }
 
+        .experience-timeline {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
 
-<!-- =========================
-     PERSONAL DETAILS
-========================= -->
+        .experience-card {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            display: block;
+            padding: 30px 34px;
+            margin-bottom: 28px;
+            border-radius: 20px;
+        }
 
-{% if dob or languages or interests %}
+        .experience-content {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+        }
 
-<section>
+        .experience-title {
+            width: 100%;
+            margin: 0 0 8px 0;
+            line-height: 1.3;
+        }
 
-    <h2>Personal Details</h2>
+        .experience-company {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin: 0 0 10px 0;
+        }
 
-    <div class="contact-card">
+        .experience-date {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
 
-        {% if dob %}
+        .experience-description {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
 
-        <p>
-            <strong>Date of Birth:</strong>
-            {{ dob }}
-        </p>
+            display: flex;
+            align-items: flex-start;
 
-        {% endif %}
+            gap: 14px;
 
+            margin-top: 18px;
+            padding: 18px 20px;
 
-        {% if languages %}
+            line-height: 1.8;
 
-        <p>
-            <strong>Languages:</strong>
-            {{ languages }}
-        </p>
+            white-space: normal;
 
-        {% endif %}
+            overflow-wrap: break-word;
 
+            word-break: normal;
+        }
 
-        {% if interests %}
+        .experience-description-icon {
+            flex: 0 0 auto;
 
-        <p>
-            <strong>Interests:</strong>
-            {{ interests }}
-        </p>
+            width: 30px;
+            height: 30px;
 
-        {% endif %}
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    </div>
+        .experience-description-text {
+            flex: 1 1 auto;
 
-</section>
+            width: auto;
 
-{% endif %}
+            min-width: 0;
 
+            font-size: 15px;
 
+            line-height: 1.8;
 
-<!-- =========================
-     CONTACT
-========================= -->
+            white-space: normal;
 
-<section>
+            overflow-wrap: break-word;
 
-    <h2>Contact</h2>
+            word-break: normal;
+        }
 
-    <div class="contact-card">
+        .experience-description-text * {
+            max-width: 100%;
+        }
 
 
-        {% if email %}
+        /* Desktop */
 
-        <p>
+        @media (min-width: 769px) {
 
-            <strong>Email:</strong>
+            .experience-card {
+                padding-left: 42px;
+                padding-right: 42px;
+            }
 
-            <a href="mailto:{{ email }}">
-                {{ email }}
-            </a>
+            .experience-description-text {
+                font-size: 16px;
+                line-height: 1.85;
+            }
 
-        </p>
+        }
 
-        {% endif %}
 
+        /* Tablet */
 
+        @media (max-width: 900px) {
 
-        {% if phone %}
+            .experience-timeline {
+                max-width: 100%;
+            }
 
-        <p>
+            .experience-card {
+                padding: 26px;
+            }
 
-            <strong>Phone:</strong>
+        }
 
-            <a href="tel:{{ phone }}">
-                {{ phone }}
-            </a>
 
-        </p>
+        /* Mobile */
 
-        {% endif %}
+        @media (max-width: 600px) {
 
+            .experience-card {
+                padding: 22px 18px;
+                border-radius: 16px;
+            }
 
+            .experience-description {
+                padding: 15px;
+                gap: 10px;
+            }
 
-        {% if linkedin %}
+            .experience-description-text {
+                font-size: 14px;
+                line-height: 1.7;
+            }
 
-        <p>
+        }
 
-            <strong>LinkedIn:</strong>
-
-            <a href="{{ linkedin }}"
-               target="_blank"
-               rel="noopener noreferrer">
-
-                View LinkedIn Profile
-
-            </a>
-
-        </p>
-
-        {% endif %}
-
-
-
-        {% if github %}
-
-        <p>
-
-            <strong>GitHub:</strong>
-
-            <a href="{{ github }}"
-               target="_blank"
-               rel="noopener noreferrer">
-
-                View GitHub Profile
-
-            </a>
-
-        </p>
-
-        {% endif %}
-
-
-    </div>
-
-</section>
-
-
-</main>
-
-
-
-<!-- =========================
-     FOOTER
-========================= -->
-
-<footer>
-
-    <p>
-        © {{ name }} - Portfolio
-    </p>
-
-</footer>
-
-<script>
-
-function copyPortfolioLink() {
-
-    const portfolioUrl = window.location.origin
-        + "/portfolio/{{ portfolio_id }}";
-
-    navigator.clipboard.writeText(portfolioUrl)
-        .then(function () {
-
-            alert("Portfolio link copied!");
-
-        })
-        .catch(function () {
-
-            alert("Unable to copy the link.");
-
-        });
-
-}
-
-</script>
+    </style>
 
 </body>
 
