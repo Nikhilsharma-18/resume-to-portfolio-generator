@@ -1,0 +1,45 @@
+Name: Nikhil Sharma
+
+Headline: B.Tech CSE Student | AI & ML
+
+Education:
+B.Tech in Computer Science and Engineering, Specialization in AI & ML
+GLA University, Mathura
+2nd Year
+
+Skills:
+Python
+Java
+SQL
+C
+Pandas
+NumPy
+JavaScript
+Bootstrap
+CSS
+HTML
+
+Currently Learning:
+Object-Oriented Programming (OOPs)
+Data Structures and Algorithms (DSA)
+
+Certifications:
+AZ-900
+TCS iON
+Intellipaat
+Google Skill Badge
+PW Certificate
+
+Contact:
+Email: nikhilupmanyu9@gmail.com
+LinkedIn: https://www.linkedin.com/in/nikhil-sharma-ai18
+GitHub: https://github.com/Nikhilsharma-18
+
+Projects:
+No projects currently.
+
+Experience:
+No professional experience currently.
+
+Achievements:
+Completed multiple technical certifications.

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Resume to Portfolio Generator</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+
+<body class="upload-page">
+
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
+<nav class="navbar">
+
+    <div class="brand">
+        Resume<span>2</span>Portfolio
+    </div>
+
+</nav>
+
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<header class="upload-hero">
+
+    <div class="upload-hero-content">
+
+        <div class="badge">
+            ✨ AI-Powered Resume Generator
+        </div>
+
+        <h1>
+            Turn Your Resume Into a
+            <span>Professional Portfolio</span>
+        </h1>
+
+        <p>
+            Upload your PDF or DOCX resume and automatically
+            transform your career information into a beautiful
+            portfolio website.
+        </p>
+
+    </div>
+
+</header>
+
+
+
+<!-- =========================
+     UPLOAD CARD
+========================= -->
+
+<main class="upload-container">
+
+    <section class="upload-card">
+
+        <div class="upload-icon">
+            📄
+        </div>
+
+        <h2>
+            Upload Your Resume
+        </h2>
+
+        <p class="upload-description">
+            Select your resume to generate your portfolio automatically.
+        </p>
+
+
+        <form
+            action="/upload"
+            method="POST"
+            enctype="multipart/form-data"
+            id="resumeForm"
+        >
+
+            <label
+                for="resume"
+                class="drop-zone"
+                id="dropZone"
+            >
+
+                <div class="drop-icon">
+                    ⬆
+                </div>
+
+                <h3>
+                    Drop your resume here
+                </h3>
+
+                <p>
+                    or <span>browse files</span>
+                </p>
+
+                <small>
+                    PDF or DOCX • Max file size supported by server
+                </small>
+
+                <input
+                    type="file"
+                    id="resume"
+                    name="resume"
+                    accept=".pdf,.docx"
+                    required
+                >
+
+            </label>
+
+
+            <div
+                class="selected-file"
+                id="selectedFile"
+            >
+                No file selected
+            </div>
+
+
+            <button
+                type="submit"
+                class="generate-button"
+                id="generateButton"
+            >
+                Generate My Portfolio →
+            </button>
+
+        </form>
+
+
+        <p class="privacy-note">
+            🔒 Your resume is processed by this application to generate
+            your portfolio.
+        </p>
+
+    </section>
+
+
+
+    <!-- =========================
+         FEATURES
+    ========================= -->
+
+    <section class="features">
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                📄
+            </div>
+
+            <h3>
+                Upload
+            </h3>
+
+            <p>
+                Upload your existing PDF or DOCX resume.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                ⚡
+            </div>
+
+            <h3>
+                Automatic Parsing
+            </h3>
+
+            <p>
+                Extract skills, education, experience and projects.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                🌐
+            </div>
+
+            <h3>
+                Get Portfolio
+            </h3>
+
+            <p>
+                Instantly generate a professional portfolio page.
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <p>
+        Resume2Portfolio
+    </p>
+
+    <p>
+        Resume → Portfolio in seconds.
+    </p>
+
+</footer>
+
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
+<script>
+
+const resumeInput = document.getElementById("resume");
+const selectedFile = document.getElementById("selectedFile");
+const dropZone = document.getElementById("dropZone");
+const resumeForm = document.getElementById("resumeForm");
+const generateButton = document.getElementById("generateButton");
+
+
+/* =========================
+   File Selection
+========================= */
+
+resumeInput.addEventListener("change", function () {
+
+    if (this.files.length > 0) {
+
+        const file = this.files[0];
+
+        selectedFile.textContent =
+            "Selected: " + file.name;
+
+        dropZone.classList.add("file-selected");
+
+    }
+
+});
+
+
+
+/* =========================
+   Drag & Drop
+========================= */
+
+dropZone.addEventListener("dragover", function (event) {
+
+    event.preventDefault();
+
+    dropZone.classList.add("dragging");
+
+});
+
+
+dropZone.addEventListener("dragleave", function () {
+
+    dropZone.classList.remove("dragging");
+
+});
+
+
+dropZone.addEventListener("drop", function (event) {
+
+    event.preventDefault();
+
+    dropZone.classList.remove("dragging");
+
+    if (event.dataTransfer.files.length > 0) {
+
+        resumeInput.files = event.dataTransfer.files;
+
+        const file = event.dataTransfer.files[0];
+
+        selectedFile.textContent =
+            "Selected: " + file.name;
+
+        dropZone.classList.add("file-selected");
+
+    }
+
+});
+
+
+
+/* =========================
+   Submit Loading State
+========================= */
+
+resumeForm.addEventListener("submit", function () {
+
+    generateButton.textContent =
+        "Generating Portfolio...";
+
+    generateButton.disabled = true;
+
+});
+
+</script>
+
+
+</body>
+
+</html>

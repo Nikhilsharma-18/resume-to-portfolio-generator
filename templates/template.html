@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ name }} - Portfolio</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+
+<body>
+
+<div class="portfolio-actions">
+
+    <a href="/" class="action-button secondary">
+        ← Create Another Portfolio
+    </a>
+
+    <button
+        onclick="window.print()"
+        class="action-button primary"
+    >
+        Download / Save as PDF
+    </button>
+
+    {% if portfolio_id %}
+
+    <button
+        onclick="copyPortfolioLink()"
+        class="action-button share-button"
+    >
+        🔗 Copy Share Link
+    </button>
+
+    {% endif %}
+
+</div>
+
+<!-- =========================
+     HERO
+========================= -->
+
+<header class="hero">
+
+    <div class="hero-content">
+
+        <h1>{{ name }}</h1>
+
+        {% if summary %}
+            <p class="headline">
+                {{ summary }}
+            </p>
+        {% endif %}
+
+        <div class="hero-contact">
+
+            {% if email %}
+                <a href="mailto:{{ email }}">
+                    {{ email }}
+                </a>
+            {% endif %}
+
+            {% if phone %}
+                <a href="tel:{{ phone }}">
+                    {{ phone }}
+                </a>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<main class="container">
+
+
+<!-- =========================
+     CAREER OBJECTIVE
+========================= -->
+
+{% if summary %}
+
+<section>
+
+    <h2>Career Objective</h2>
+
+    <p>
+        {{ summary }}
+    </p>
+
+</section>
+
+{% endif %}
+
+
+
+<!-- =========================
+     SKILLS
+========================= -->
+
+{% if skills %}
+
+<section>
+
+    <h2>Skills</h2>
+
+    <div class="skills-container">
+
+        {% for skill in skills %}
+
+            <span class="skill">
+                {{ skill }}
+            </span>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endif %}
+
+
+
+<!-- =========================
+     EDUCATION
+========================= -->
+
+{% if education %}
+
+<section>
+
+    <h2>Education</h2>
+
+    <div class="cards">
+
+        {% for item in education %}
+
+        <div class="card">
+
+            {% if item.degree %}
+                <h3>
+                    {{ item.degree }}
+                </h3>
+            {% endif %}
+
+            {% if item.institution %}
+                <p>
+                    <strong>
+                        {{ item.institution }}
+                    </strong>
+                </p>
+            {% endif %}
+
+            {% if item.year %}
+                <p>
+                    {{ item.year }}
+                </p>
+            {% endif %}
+
+            {% if item.score %}
+                <p>
+                    {{ item.score }}
+                </p>
+            {% endif %}
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endif %}
+
+
+
+<!-- =========================
+     EXPERIENCE
+========================= -->
+
+{% if experience %}
+
+<section>
+
+    <h2>Experience</h2>
+
+    <div class="cards">
+
+        {% for item in experience %}
+
+        <div class="card project-card">
+
+            {% if item.role %}
+                <h3>
+                    {{ item.role }}
+                </h3>
+            {% endif %}
+
+            {% if item.company %}
+                <p>
+                    <strong>
+                        {{ item.company }}
+                    </strong>
+                </p>
+            {% endif %}
+
+            {% if item.start_date and item.end_date %}
+                <p>
+                    {{ item.start_date }}
+                    –
+                    {{ item.end_date }}
+                </p>
+            {% endif %}
+
+            {% if item.description %}
+                <p>
+                    {{ item.description }}
+                </p>
+            {% endif %}
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endif %}
+
+
+
+<!-- =========================
+     PROJECTS
+========================= -->
+
+{% if projects %}
+
+<section>
+
+    <h2>Projects</h2>
+
+    <div class="cards">
+
+        {% for project in projects %}
+
+        <div class="card project-card">
+
+            {% if project.name %}
+
+                <h3>
+                    {{ project.name }}
+                </h3>
+
+            {% endif %}
+
+            {% if project.description %}
+
+                <p>
+                    {{ project.description }}
+                </p>
+
+            {% endif %}
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endif %}
+
+
+
+<!-- =========================
+     CERTIFICATIONS
+========================= -->
+
+{% if certifications %}
+
+<section>
+
+    <h2>Certifications</h2>
+
+    <div class="cards">
+
+        {% for certification in certifications %}
+
+        <div class="card">
+
+            <p>
+                {{ certification }}
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endif %}
+
+
+
+<!-- =========================
+     ACHIEVEMENTS
+========================= -->
+
+{% if achievements %}
+
+<section>
+
+    <h2>Achievements & Activities</h2>
+
+    <div class="cards">
+
+        {% for achievement in achievements %}
+
+        <div class="card">
+
+            <p>
+                {{ achievement }}
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endif %}
+
+
+
+<!-- =========================
+     PERSONAL DETAILS
+========================= -->
+
+{% if dob or languages or interests %}
+
+<section>
+
+    <h2>Personal Details</h2>
+
+    <div class="contact-card">
+
+        {% if dob %}
+
+        <p>
+            <strong>Date of Birth:</strong>
+            {{ dob }}
+        </p>
+
+        {% endif %}
+
+
+        {% if languages %}
+
+        <p>
+            <strong>Languages:</strong>
+            {{ languages }}
+        </p>
+
+        {% endif %}
+
+
+        {% if interests %}
+
+        <p>
+            <strong>Interests:</strong>
+            {{ interests }}
+        </p>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+{% endif %}
+
+
+
+<!-- =========================
+     CONTACT
+========================= -->
+
+<section>
+
+    <h2>Contact</h2>
+
+    <div class="contact-card">
+
+
+        {% if email %}
+
+        <p>
+
+            <strong>Email:</strong>
+
+            <a href="mailto:{{ email }}">
+                {{ email }}
+            </a>
+
+        </p>
+
+        {% endif %}
+
+
+
+        {% if phone %}
+
+        <p>
+
+            <strong>Phone:</strong>
+
+            <a href="tel:{{ phone }}">
+                {{ phone }}
+            </a>
+
+        </p>
+
+        {% endif %}
+
+
+
+        {% if linkedin %}
+
+        <p>
+
+            <strong>LinkedIn:</strong>
+
+            <a href="{{ linkedin }}"
+               target="_blank"
+               rel="noopener noreferrer">
+
+                View LinkedIn Profile
+
+            </a>
+
+        </p>
+
+        {% endif %}
+
+
+
+        {% if github %}
+
+        <p>
+
+            <strong>GitHub:</strong>
+
+            <a href="{{ github }}"
+               target="_blank"
+               rel="noopener noreferrer">
+
+                View GitHub Profile
+
+            </a>
+
+        </p>
+
+        {% endif %}
+
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <p>
+        © {{ name }} - Portfolio
+    </p>
+
+</footer>
+
+<script>
+
+function copyPortfolioLink() {
+
+    const portfolioUrl = window.location.origin
+        + "/portfolio/{{ portfolio_id }}";
+
+    navigator.clipboard.writeText(portfolioUrl)
+        .then(function () {
+
+            alert("Portfolio link copied!");
+
+        })
+        .catch(function () {
+
+            alert("Unable to copy the link.");
+
+        });
+
+}
+
+</script>
+
+</body>
+
+</html>

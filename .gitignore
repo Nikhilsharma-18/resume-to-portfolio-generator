@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+
+uploads/
+
+portfolio.db
+
+.env
+
+.venv/
+venv/
+env/
+
+.vscode/
+.idea/
+
+.DS_Store
