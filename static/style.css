@@ -2854,3 +2854,246 @@ footer {
         line-height: 1.7;
     }
 }
+
+
+/* =====================================================
+   PORTFOLIO ACTION CONTROLS (SHARE & DOWNLOAD)
+===================================================== */
+
+.action-toolbar {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+}
+
+.hero-action-bar {
+    margin-top: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+}
+
+.btn-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    cursor: pointer;
+    backdrop-filter: blur(12px);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+    outline: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-action-lg {
+    padding: 13px 24px;
+    font-size: 15px;
+    border-radius: 14px;
+}
+
+.btn-share {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(124, 58, 237, 0.35));
+    border-color: rgba(168, 85, 247, 0.4);
+    color: #f3e8ff;
+}
+
+.btn-share:hover {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.45), rgba(124, 58, 237, 0.55));
+    border-color: rgba(168, 85, 247, 0.7);
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+    transform: translateY(-2px);
+    color: #ffffff;
+}
+
+.btn-download {
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.25), rgba(14, 165, 233, 0.35));
+    border-color: rgba(6, 182, 212, 0.4);
+    color: #cffaff;
+}
+
+.btn-download:hover {
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.45), rgba(14, 165, 233, 0.55));
+    border-color: rgba(6, 182, 212, 0.7);
+    box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+    transform: translateY(-2px);
+    color: #ffffff;
+}
+
+.download-dropdown {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.download-dropdown .btn-download {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: none;
+}
+
+.btn-dropdown-toggle {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.25), rgba(14, 165, 233, 0.35));
+    border-color: rgba(6, 182, 212, 0.4);
+    color: #cffaff;
+}
+
+.btn-dropdown-toggle:hover {
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.45), rgba(14, 165, 233, 0.55));
+    color: #ffffff;
+}
+
+.download-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 200px;
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(6, 182, 212, 0.15);
+    padding: 8px;
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    z-index: 1000;
+    backdrop-filter: blur(16px);
+}
+
+.download-menu.show {
+    display: flex;
+    animation: fadeInDown 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.download-menu a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: #e2e8f0;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.download-menu a:hover {
+    background: rgba(6, 182, 212, 0.15);
+    color: #38bdf8;
+}
+
+.btn-action.loading {
+    opacity: 0.75;
+    pointer-events: none;
+}
+
+/* =====================================================
+   TOAST NOTIFICATIONS
+===================================================== */
+
+.toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 22px;
+    background: rgba(15, 23, 42, 0.92);
+    border: 1px solid rgba(168, 85, 247, 0.35);
+    border-radius: 14px;
+    color: #f8fafc;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(168, 85, 247, 0.2);
+    backdrop-filter: blur(16px);
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: auto;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.toast i {
+    font-size: 18px;
+    color: #a855f7;
+}
+
+.toast-success i {
+    color: #34d399;
+}
+
+.toast-error i {
+    color: #f87171;
+}
+
+.toast-info i {
+    color: #38bdf8;
+}
+
+/* Navbar actions styling */
+.nav-actions {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+@media (max-width: 768px) {
+    .nav-actions {
+        display: none;
+    }
+    .hero-action-bar {
+        width: 100%;
+        justify-content: flex-start;
+    }
+    .hero-action-bar .btn-action-lg {
+        padding: 11px 18px;
+        font-size: 14px;
+    }
+    .toast-container {
+        bottom: 16px;
+        right: 16px;
+        left: 16px;
+    }
+    .toast {
+        width: 100%;
+        justify-content: center;
+    }
+}

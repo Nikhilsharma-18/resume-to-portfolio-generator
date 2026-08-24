@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for, make_response
 from werkzeug.utils import secure_filename
 
 from parser import extract_resume_data
@@ -11,6 +11,8 @@ from database import (
 
 import os
 import uuid
+import io
+import zipfile
 
 from pypdf import PdfReader
 from docx import Document
@@ -252,14 +254,12 @@ def upload_resume():
         )
 
 
-        # =========================
-        # Render Portfolio
-        # =========================
-
-        return render_template(
-            "template.html",
-            **resume_data,
-            portfolio_id=portfolio_id
+        # Redirect to persistent shareable portfolio URL
+        return redirect(
+            url_for(
+                "view_portfolio",
+                portfolio_id=portfolio_id
+            )
         )
 
 
@@ -321,6 +321,121 @@ def view_portfolio(portfolio_id):
         **data,
         portfolio_id=portfolio_id
     )
+
+
+# =========================
+# Standalone HTML Download
+# =========================
+
+@app.route(
+    "/portfolio/<portfolio_id>/export/html"
+)
+def export_portfolio_html(portfolio_id):
+
+    data = get_portfolio(portfolio_id)
+
+    if not data:
+        return ("Portfolio not found.", 404)
+
+    css_path = os.path.join(app.static_folder, "style.css")
+    css_content = ""
+    if os.path.exists(css_path):
+        with open(css_path, "r", encoding="utf-8") as f:
+            css_content = f.read()
+
+    js_path = os.path.join(app.static_folder, "script.js")
+    js_content = ""
+    if os.path.exists(js_path):
+        with open(js_path, "r", encoding="utf-8") as f:
+            js_content = f.read()
+
+    rendered_html = render_template(
+        "template.html",
+        **data,
+        portfolio_id=portfolio_id,
+        standalone_download=True,
+        inline_css=css_content,
+        inline_js=js_content
+    )
+
+    name = (data.get("name") or "my").strip()
+    safe_name = "".join(c if c.isalnum() else "-" for c in name.lower()).strip("-") or "my"
+    filename = f"{safe_name}-portfolio.html"
+
+    response = make_response(rendered_html)
+    response.headers["Content-Type"] = "text/html; charset=utf-8"
+    response.headers["Content-Disposition"] = f'attachment; filename="{filename}"'
+    return response
+
+
+# =========================
+# Full ZIP Package Export (HTML, CSS, JS)
+# =========================
+
+@app.route(
+    "/portfolio/<portfolio_id>/export/zip"
+)
+def export_portfolio_zip(portfolio_id):
+
+    data = get_portfolio(portfolio_id)
+
+    if not data:
+        return ("Portfolio not found.", 404)
+
+    css_path = os.path.join(app.static_folder, "style.css")
+    css_content = ""
+    if os.path.exists(css_path):
+        with open(css_path, "r", encoding="utf-8") as f:
+            css_content = f.read()
+
+    js_path = os.path.join(app.static_folder, "script.js")
+    js_content = ""
+    if os.path.exists(js_path):
+        with open(js_path, "r", encoding="utf-8") as f:
+            js_content = f.read()
+
+    # Render index.html pointing to local relative style.css and script.js
+    rendered_html = render_template(
+        "template.html",
+        **data,
+        portfolio_id=portfolio_id,
+        zip_download=True
+    )
+
+    name = (data.get("name") or "my").strip()
+    safe_name = "".join(c if c.isalnum() else "-" for c in name.lower()).strip("-") or "my"
+    
+    readme_content = f"""# {data.get("name", "User")}'s Portfolio
+
+This portfolio bundle contains:
+- `index.html`: The main portfolio HTML structure
+- `style.css`: All portfolio styles, themes, and layout rules
+- `script.js`: Interactive elements, share options, and print handlers
+
+## How to View Locally
+Simply double click `index.html` to open your portfolio in any browser.
+
+## How to Deploy
+You can upload these files (`index.html`, `style.css`, `script.js`) to GitHub Pages, Netlify, or Vercel for free web hosting!
+"""
+
+    # Create ZIP archive in memory
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zip_file:
+        zip_file.writestr("index.html", rendered_html)
+        zip_file.writestr("style.css", css_content)
+        zip_file.writestr("script.js", js_content)
+        zip_file.writestr("README.md", readme_content)
+
+    zip_buffer.seek(0)
+    filename = f"{safe_name}-portfolio.zip"
+
+    response = make_response(zip_buffer.getvalue())
+    response.headers["Content-Type"] = "application/zip"
+    response.headers["Content-Disposition"] = f'attachment; filename="{filename}"'
+    return response
+
+
 
 
 # =========================

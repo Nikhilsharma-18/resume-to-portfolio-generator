@@ -7,9 +7,28 @@
 
     <title>{{ name }} | Portfolio</title>
 
+    <!-- SEO & Social Sharing Metadata -->
+    <meta name="description" content="{% if summary %}{{ summary[:160] }}{% else %}Professional Portfolio of {{ name }}{% endif %}">
+    <meta property="og:title" content="{{ name }} — Portfolio">
+    <meta property="og:description" content="{% if summary %}{{ summary[:160] }}{% else %}Professional Portfolio of {{ name }}{% endif %}">
+    <meta property="og:type" content="website">
+    {% if request and request.url %}
+    <meta property="og:url" content="{{ request.url }}">
+    {% endif %}
+
+    {% if inline_css %}
+    <!-- Inlined Styles for Standalone Offline Usage -->
+    <style>
+        {{ inline_css | safe }}
+    </style>
+    {% elif zip_download %}
+    <!-- ZIP Archive Mode: Local Relative CSS -->
+    <link rel="stylesheet" href="style.css">
+    {% else %}
     <!-- Main CSS -->
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    {% endif %}
+
 
     <!-- Devicon - Skills Icons -->
     <link rel="stylesheet"
@@ -18,6 +37,9 @@
     <!-- Font Awesome - UI Icons -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- html2pdf.js - PDF Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 
 <body>
@@ -35,7 +57,7 @@
          NAVBAR
     ========================== -->
 
-    <nav class="navbar">
+    <nav class="navbar no-print">
 
         <div class="nav-container">
 
@@ -53,6 +75,35 @@
                 <a href="#projects">Projects</a>
                 <a href="#contact">Contact</a>
 
+            </div>
+
+            <!-- NAVBAR ACTION CONTROLS -->
+            <div class="nav-actions action-toolbar">
+                <button type="button" class="btn btn-action btn-share" onclick="sharePortfolio(this)" title="Share Portfolio Link">
+                    <i class="fa-solid fa-share-nodes"></i>
+                    <span>Share</span>
+                </button>
+
+                <div class="download-dropdown">
+                    <button type="button" class="btn btn-action btn-download" onclick="downloadZip(this)" title="Download Complete Portfolio ZIP Package">
+                        <i class="fa-solid fa-file-zipper"></i>
+                        <span>Download ZIP</span>
+                    </button>
+                    <button type="button" class="btn btn-action btn-dropdown-toggle" onclick="toggleDownloadMenu(event, this)" aria-label="Download Options">
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="download-menu">
+                        <a href="javascript:void(0)" onclick="downloadZip(this)">
+                            <i class="fa-solid fa-file-zipper"></i> Download ZIP (.zip — HTML, CSS, JS)
+                        </a>
+                        <a href="javascript:void(0)" onclick="downloadHTML(this)">
+                            <i class="fa-solid fa-code"></i> Download HTML (.html — Inlined CSS & JS)
+                        </a>
+                        <a href="javascript:void(0)" onclick="downloadPDF(this)">
+                            <i class="fa-solid fa-file-pdf"></i> Download PDF (.pdf)
+                        </a>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -100,7 +151,7 @@
                 {% endif %}
 
 
-                <!-- HERO BUTTONS -->
+                <!-- HERO BUTTONS & ACTION CONTROLS -->
 
                 <div class="hero-buttons">
 
@@ -119,6 +170,37 @@
                         Contact Me
 
                     </a>
+
+                </div>
+
+                <!-- PROMINENT PORTFOLIO ACTION CONTROLS -->
+                <div class="hero-action-bar action-toolbar no-print">
+
+                    <button type="button" class="btn btn-action btn-action-lg btn-share" onclick="sharePortfolio(this)" title="Share Portfolio Link">
+                        <i class="fa-solid fa-share-nodes"></i>
+                        <span>Share Portfolio</span>
+                    </button>
+
+                    <div class="download-dropdown">
+                        <button type="button" class="btn btn-action btn-action-lg btn-download" onclick="downloadZip(this)" title="Download Complete Portfolio Package">
+                            <i class="fa-solid fa-file-zipper"></i>
+                            <span>Download ZIP</span>
+                        </button>
+                        <button type="button" class="btn btn-action btn-action-lg btn-dropdown-toggle" onclick="toggleDownloadMenu(event, this)" aria-label="More Download Options">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="download-menu">
+                            <a href="javascript:void(0)" onclick="downloadZip(this)">
+                                <i class="fa-solid fa-file-zipper"></i> Full ZIP Bundle (.zip — HTML, CSS, JS)
+                            </a>
+                            <a href="javascript:void(0)" onclick="downloadHTML(this)">
+                                <i class="fa-solid fa-code"></i> Standalone Single File (.html — Inlined CSS & JS)
+                            </a>
+                            <a href="javascript:void(0)" onclick="downloadPDF(this)">
+                                <i class="fa-solid fa-file-pdf"></i> PDF Document (.pdf)
+                            </a>
+                        </div>
+                    </div>
 
                 </div>
 
@@ -1157,8 +1239,46 @@
             }
 
         }
-
+        /* Print Styles */
+        @media print {
+            .no-print, .navbar, .action-toolbar, .hero-buttons, .hero-action-bar, .bg-orb, .bg-grid, #toast-container {
+                display: none !important;
+            }
+            body {
+                background: #ffffff !important;
+                color: #111827 !important;
+            }
+            .hero-badge, .about-card, .skill-card, .education-card, .experience-card, .project-card, .achievement-card, .certification-card {
+                background: #ffffff !important;
+                border: 1px solid #e5e7eb !important;
+                box-shadow: none !important;
+                color: #111827 !important;
+            }
+            h1, h2, h3, p, span, div {
+                color: #111827 !important;
+            }
+        }
     </style>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toast-container" class="toast-container no-print" aria-live="polite"></div>
+
+    <!-- PORTFOLIO JAVASCRIPT & DATA SETUP -->
+    <script>
+        window.PORTFOLIO_ID = "{{ portfolio_id if portfolio_id else '' }}";
+    </script>
+    {% if inline_js %}
+    <!-- Inlined JavaScript for Standalone Offline Usage -->
+    <script>
+        {{ inline_js | safe }}
+    </script>
+    {% elif zip_download %}
+    <!-- ZIP Archive Mode: Local Relative Script -->
+    <script src="script.js"></script>
+    {% else %}
+    <!-- Main JS -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    {% endif %}
 
 </body>
 

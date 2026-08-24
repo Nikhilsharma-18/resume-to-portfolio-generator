@@ -1,4 +1,6 @@
 import sqlite3
+import json
+import ast
 
 
 DATABASE = "portfolio.db"
@@ -73,6 +75,18 @@ def init_database():
 
 
 # =========================
+# Helper for serialization
+# =========================
+
+def _serialize_field(val):
+    if val is None:
+        return json.dumps([])
+    if isinstance(val, (list, dict)):
+        return json.dumps(val)
+    return str(val)
+
+
+# =========================
 # Save Portfolio
 # =========================
 
@@ -121,17 +135,17 @@ def save_portfolio(portfolio_id, data):
 
         data.get("summary", ""),
 
-        str(data.get("skills", "")),
+        _serialize_field(data.get("skills", [])),
 
-        str(data.get("education", "")),
+        _serialize_field(data.get("education", [])),
 
-        str(data.get("experience", "")),
+        _serialize_field(data.get("experience", [])),
 
-        str(data.get("projects", "")),
+        _serialize_field(data.get("projects", [])),
 
-        str(data.get("certifications", "")),
+        _serialize_field(data.get("certifications", [])),
 
-        str(data.get("achievements", "")),
+        _serialize_field(data.get("achievements", [])),
 
         data.get("dob", ""),
 
@@ -178,4 +192,19 @@ def get_portfolio(portfolio_id):
 
     data.pop("portfolio_id", None)
 
-    return data
+    # Deserialize JSON fields
+    json_fields = ["skills", "education", "experience", "projects", "certifications", "achievements"]
+    for field in json_fields:
+        raw_val = data.get(field)
+        if raw_val:
+            try:
+                data[field] = json.loads(raw_val)
+            except Exception:
+                try:
+                    data[field] = ast.literal_eval(raw_val)
+                except Exception:
+                    data[field] = raw_val
+        else:
+            data[field] = []
+
+    return data
